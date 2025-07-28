@@ -8,16 +8,40 @@ chaos = tibble::tibble(
 )
 
 fig_x = ggplot2::ggplot(data = chaos) +
-  ggplot2::geom_line(ggplot2::aes(x = t, y = x),color = "#c7e0f6") +
+  ggplot2::geom_line(ggplot2::aes(x = t, y = x),color = "#c7e0f6",linewidth = 1.05) +
   ggplot2::scale_y_continuous(limits = c(-2.5,2.5)) +
+  ggplot2::annotate("segment",
+                     x = 0, xend = 210,
+                     y = -1.5, yend = -1.5,
+                     arrow = ggplot2::arrow(length = ggplot2::unit(0.1, "cm"), 
+                                            ends = "last", type = "closed"),
+                     color = "grey40", linewidth = 0.45) +
+  ggplot2::annotate("segment",
+                    x = 0, xend = 0,
+                    y = -1.5, yend = 1.85,
+                    arrow = ggplot2::arrow(length = ggplot2::unit(0.1, "cm"), 
+                                           ends = "last", type = "closed"),
+                    color = "grey40", linewidth = 0.45) +
   ggplot2::theme_void()
+fig_x + ggview::canvas(2.5,1.05,bg = "transparent",dpi = 300)
 
 fig_y = ggplot2::ggplot(data = chaos) +
-  ggplot2::geom_line(ggplot2::aes(x = t, y = y),color = "#f8cccb") +
+  ggplot2::geom_line(ggplot2::aes(x = t, y = y),color = "#f8cccb",linewidth = 1.05) +
   ggplot2::scale_y_continuous(limits = c(-2.5,2.5)) +
+  ggplot2::annotate("segment",
+                    x = 0, xend = 210,
+                    y = -1.5, yend = -1.5,
+                    arrow = ggplot2::arrow(length = ggplot2::unit(0.1, "cm"), 
+                                           ends = "last", type = "closed"),
+                    color = "grey40", linewidth = 0.45) +
+  ggplot2::annotate("segment",
+                    x = 0, xend = 0,
+                    y = -1.5, yend = 1.85,
+                    arrow = ggplot2::arrow(length = ggplot2::unit(0.1, "cm"), 
+                                           ends = "last", type = "closed"),
+                    color = "grey40", linewidth = 0.45) +
   ggplot2::theme_void()
 
-fig_x + ggview::canvas(2.5,1.05,bg = "transparent",dpi = 300)
 fig_y + ggview::canvas(2.5,1.05,bg = "transparent",dpi = 300)
 
 ggview::save_ggplot(fig_x + ggview::canvas(2.5,1.05,bg = "transparent",dpi = 300),
@@ -60,12 +84,12 @@ dev.off()
 png("./Schematic for temporal empirical dynamic modeling/Mx.png", 
     width = 1600, height = 1600, res = 300, bg = "transparent")
 plot3D::lines3D(lorenz[,1], lorenz[,2], lorenz[,3], colvar = NULL, col = "#c7e0f6",
-                theta = 90, phi = 85, pch = 19, lwd = 1.25, bty = "n", axes = FALSE)
+                theta = 60, phi = 85, pch = 19, lwd = 1.25, bty = "n", axes = FALSE)
 dev.off()
 
 # Plot MY view
 png("./Schematic for temporal empirical dynamic modeling/My.png",
     width = 1600, height = 1600, res = 300, bg = "transparent")
 plot3D::lines3D(lorenz[,1], lorenz[,2], lorenz[,3], colvar = NULL, col = "#f8cccb",
-                theta = 90, phi = -95, pch = 19, lwd = 1.25, bty = "n", axes = FALSE)
+                theta = 60, phi = -95, pch = 19, lwd = 1.25, bty = "n", axes = FALSE)
 dev.off()
