@@ -74,4 +74,5 @@ fig_covid_jp = ggplot2::ggplot() +
 
 fig_covid_jp + ggview::canvas(5.55,3.15,dpi = 300)
 ggview::save_ggplot(fig_covid_jp + ggview::canvas(5.55,3.15,dpi = 300),
-                    './COVID-19 spread across japanese prefectures/covid_jp.pdf')
+                    './COVID-19 spread across japanese prefectures/covid_jp.pdf',
+                    device = cairo_pdf)
