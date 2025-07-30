@@ -17,6 +17,9 @@ fig_cvd_ts = ggplot2::ggplot(cvd_long, ggplot2::aes(x = id, y = value, color = v
                  legend.justification = c("center","top"),
                  legend.background = ggplot2::element_rect(fill = "transparent", color = NA))
 fig_cvd_ts + ggview::canvas(6.5,3.75)
+ggview::save_ggplot(fig_cvd_ts + ggview::canvas(6.5,3.75,dpi = 300),
+                    './Air pollution and cardiovascular health in hong kong/cvd_ts.pdf',
+                    device = cairo_pdf)
 
 tEDM::fnn(cvd,"cvd",E = 2:50,eps = stats::sd(cvd$cvd))
 
@@ -65,3 +68,11 @@ pcm_df = purrr::map_dfr(res,\(.list) .process_xmap_result(.list,type = "pxmap"))
 plot_cs_matrix(ccm_df)
 plot_cs_matrix(pcm_df)
 
+res[["cvd_o3"]]
+res[["cvd_no2"]]
+res[["cvd_so2"]]
+res[["cvd_rsp"]]
+res[["no2_so2"]]
+res[["rsp_o3"]]
+
+plot(res[["cvd_no2"]],ylimits = c(0,0.4))
