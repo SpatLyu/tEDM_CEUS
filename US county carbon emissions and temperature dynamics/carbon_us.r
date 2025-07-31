@@ -11,7 +11,7 @@ tEDM::fnn(carbon_list[[100]],"carbon",E = 2:10,
 
 res = carbon_list |>
   purrr::map_dfr(\(.x) {
-    g = tEDM::cmc(.x,"tem","carbon",E = 3,k = 20,progressbar = FALSE)
+    g = tEDM::cmc(.x,"tem","carbon",E = 3,k = 20,threads = parallel::detectCores(),progressbar = FALSE)
     return(g$xmap)
   })
 head(res)
@@ -24,14 +24,18 @@ res_carbon = res |>
                       names_to = "variable", values_to = "value")
 head(res_carbon)
 
+res_carbon$variable = factor(res_carbon$variable,
+                             levels = c("carbon_tem", "tem_carbon"),
+                             labels = c("carbon → tem", "tem → carbon"))
 fig_county_us = ggplot2::ggplot(res_carbon,
                             ggplot2::aes(x = variable, y = value, fill = variable)) +
   ggplot2::geom_boxplot() +
   ggplot2::theme_bw() +
-  ggplot2::scale_x_discrete(name = "",
-                            labels = c("carbon_tem" = "carbon → tem",
-                                       "tem_carbon" = "tem → carbon")) +
-  ggplot2::scale_y_continuous(name = "Causal Strength") +
+  ggplot2::scale_x_discrete(name = "") +
+  ggplot2::scale_y_continuous(name = "Causal Strength",
+                              expand = c(0,0),
+                              limits = c(0,0.3),
+                              breaks = seq(0,0.3,by = 0.1)) +
   ggplot2::theme(legend.position = "none")
 
 fig_county_us + ggview::canvas(4.5,4.5,dpi = 300)
