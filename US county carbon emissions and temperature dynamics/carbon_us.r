@@ -11,7 +11,7 @@ tEDM::fnn(carbon_list[[100]],"carbon",E = 2:10,
 
 res = carbon_list |>
   purrr::map_dfr(\(.x) {
-    g = tEDM::cmc(.x,"tem","carbon",E = 3,k = 20,threads = parallel::detectCores(),progressbar = FALSE)
+    g = tEDM::cmc(.x,"tem","carbon",E = 3,k = 20,progressbar = FALSE)
     return(g$xmap)
   })
 head(res)

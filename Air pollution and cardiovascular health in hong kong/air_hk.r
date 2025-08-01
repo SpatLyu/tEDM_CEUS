@@ -53,8 +53,7 @@ for (pair in var_pairs) {
                          cause = var2,
                          effect = var1,
                          conds = conds,
-                         libsizes = seq(12, 1012, 100),
-                         threads = parallel::detectCores(),
+                         libsizes = seq(12, 1032, 100),
                          E = 11, k = 12)
 }
 readr::write_rds(res,'./Air pollution and cardiovascular health in hong kong/air_hk.rds')
