@@ -20,7 +20,7 @@
   return(rbind(g1,g2))
 }
 
-plot_cs_matrix = \(.tbf,legend_title = "Causal Strength"){
+plot_cs_matrix = \(.tbf,legend_title = expression(rho)){
   .tbf = .tbf |>
     dplyr::mutate(sig_marker = dplyr::case_when(
       sig > 0.05 ~ sprintf("paste(%.4f^'#')", cs),
