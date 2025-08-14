@@ -11,7 +11,7 @@ tEDM::fnn(carbon_list[[100]],"carbon",E = 2:10,
 
 res = carbon_list |>
   purrr::map_dfr(\(.x) {
-    g = tEDM::cmc(.x,"tem","carbon",E = 3,k = 20,progressbar = FALSE)
+    g = tEDM::cmc(.x,"tem","carbon",E = 3,k = 20,dist.metric = "L2",progressbar = FALSE)
     return(g$xmap)
   })
 head(res)
@@ -35,7 +35,7 @@ fig_county_us = ggplot2::ggplot(res_carbon,
   ggplot2::scale_y_continuous(name = "Causal Strength",
                               expand = c(0,0),
                               limits = c(0,0.3),
-                              breaks = seq(0,0.3,by = 0.1)) +
+                              breaks = seq(0,0.3,by = 0.05)) +
   ggplot2::theme(legend.position = "none")
 
 fig_county_us + ggview::canvas(4.5,4.5,dpi = 300)

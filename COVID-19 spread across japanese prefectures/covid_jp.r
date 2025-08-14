@@ -9,11 +9,11 @@ covid = covid |>
 
 tEDM::fnn(covid,"Tokyo",E = 2:30,eps = stats::sd(covid$Tokyo)/10)
 
-tEDM::simplex(covid,"Tokyo","Tokyo",E = 4:50,k = 5:60,tau = 0)
+tEDM::simplex(covid,"Tokyo","Tokyo",E = 4:50,k = 5:60)
 
 res = names(covid)[-match("Tokyo",names(covid))] |>
   purrr::map_dfr(\(.l) {
-    g = tEDM::ccm(covid,"Tokyo",.l,E = 4,k = 5,tau = 0,progressbar = FALSE)
+    g = tEDM::ccm(covid,"Tokyo",.l,E = 4,k = 7,progressbar = FALSE)
     res = dplyr::mutate(g$xmap,x = "Tokyo",y = .l)
     return(res)
   })
