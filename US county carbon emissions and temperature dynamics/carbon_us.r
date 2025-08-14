@@ -6,12 +6,12 @@ head(carbon)
 carbon_list = dplyr::group_split(carbon, by = fips)
 length(carbon_list)
 
-tEDM::fnn(carbon_list[[100]],"carbon",E = 2:10,"
+tEDM::fnn(carbon_list[[100]],"carbon",E = 2:10,
           eps = stats::sd(carbon_list[[100]]$carbon))
 
 res = carbon_list |>
   purrr::map_dfr(\(.x) {
-    g = tEDM::cmc(.x,"tem","carbon",E = 3,k = 20,dist.metric = "L2,progressbar = FALSE)
+    g = tEDM::cmc(.x,"tem","carbon",E = 3,k = 20,dist.metric = "L2",progressbar = FALSE)
     return(g$xmap)
   })
 head(res)
