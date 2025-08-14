@@ -56,10 +56,10 @@ for (pair in var_pairs) {
                          libsizes = seq(12, 1012, 100),
                          E = 11, k = 12)
 }
-readr::write_rds(res,'./Air pollution and cardiovascular health in hong kong/air_hk.rds')
+readr::write_rds(res,'./Air pollution and cardiovascular health in hong kong/cvds_hk.rds')
 
 source('./Air pollution and cardiovascular health in hong kong/utils.r')
-res = readr::read_rds('./Air pollution and cardiovascular health in hong kong/air_hk.rds')
+res = readr::read_rds('./Air pollution and cardiovascular health in hong kong/cvds_hk.rds')
 ccm_df = purrr::map_dfr(res,\(.list) .process_xmap_result(.list,type = "xmap"))
 pcm_df = purrr::map_dfr(res,\(.list) .process_xmap_result(.list,type = "pxmap"))
 fig_cs = plot_cs_matrix(ccm_df)
