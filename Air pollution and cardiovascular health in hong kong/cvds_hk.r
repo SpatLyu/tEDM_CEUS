@@ -53,6 +53,7 @@ for (pair in var_pairs) {
                          cause = var2,
                          effect = var1,
                          conds = conds,
+                         dist.metric = "L2",
                          libsizes = seq(20, 1020, 100),
                          E = 7, k = 8)
 }
@@ -80,6 +81,36 @@ ggview::save_ggplot(fig_cvds_hk + ggview::canvas(7.65,6.5),
 #------------------------------------------------------------------------------#
 #----------------              Appendix figure               ------------------#
 #------------------------------------------------------------------------------#
+
+fig_cvd_rsp = plot_ccm_output(res[["cvd_rsp"]])
+fig_cvd_rsp_p = plot_pcm_output(res[["cvd_rsp"]])
+
+fig_cvd_no2 = plot_ccm_output(res[["cvd_no2"]])
+fig_cvd_no2_p = plot_pcm_output(res[["cvd_no2"]])
+
+fig_cvd_so2 = plot_ccm_output(res[["cvd_so2"]])
+fig_cvd_so2_p = plot_pcm_output(res[["cvd_so2"]])
+
+fig_cvd_o3 = plot_ccm_output(res[["cvd_o3"]])
+fig_cvd_o3_p = plot_pcm_output(res[["cvd_o3"]])
+
+fig_rsp_no2 = plot_ccm_output(res[["rsp_no2"]])
+fig_rsp_no2_p = plot_pcm_output(res[["rsp_no2"]])
+
+fig_rsp_so2 = plot_ccm_output(res[["rsp_so2"]])
+fig_rsp_so2_p = plot_pcm_output(res[["rsp_so2"]])
+
+fig_rsp_o3 = plot_ccm_output(res[["rsp_o3"]])
+fig_rsp_o3_p = plot_pcm_output(res[["rsp_o3"]])
+
+fig_no2_so2 = plot_ccm_output(res[["no2_so2"]])
+fig_no2_so2_p = plot_pcm_output(res[["no2_so2"]])
+
+fig_no2_o3 = plot_ccm_output(res[["no2_o3"]])
+fig_no2_o3_p = plot_pcm_output(res[["no2_o3"]])
+
+fig_so2_o3 = plot_ccm_output(res[["so2_o3"]])
+fig_so2_o3_p = plot_pcm_output(res[["so2_o3"]])
 
 fig_cvd_rsp = plot(res[["cvd_rsp"]], partial = FALSE,
                    xlimits = c(0,1030), ylimits = c(-0.01,0.2),
