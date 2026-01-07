@@ -58,3 +58,74 @@ plot_cs_matrix = \(.tbf,legend_title = expression(rho)){
     )
   return(fig)
 }
+
+.extract_prefix = \(x, case = c("title", "upper")) {
+  case = match.arg(case)
+  prefix = sub("_.*", "", x)
+  prefix = ifelse(prefix == x & !grepl("_", x), x, prefix)
+  
+  if (case == "title") {
+    result = paste0(
+      toupper(substr(prefix, 1, 1)),
+      tolower(substr(prefix, 2, nchar(prefix)))
+    )
+  } else if (case == "upper") {
+    result = toupper(prefix)
+  }
+  
+  return(result)
+}
+
+plot_ccm_output = \(g){
+  pval = g$xmap |>
+        dplyr::slice_tail(n = 1) |>
+        dplyr::select(y_xmap_x_sig,x_xmap_y_sig) |>
+        unlist() |>
+        round(3)
+  legend_texts = c(paste0(toupper(g$varname[2]), " xmap ", toupper(g$varname[1])),
+                   paste0(toupper(g$varname[1]), " xmap ", toupper(g$varname[2]))) |> 
+      paste0(", P = ",pval)
+  
+  fig = plot(g, family = "serif", partial = F,
+             xlimits = c(10,1030),
+             ylimits = c(-0.05,0.75), 
+             ybreaks = seq(-0.05,0.75,0.1),
+             legend_texts = legend_texts) +
+    ggplot2::theme(
+                axis.text.x = ggplot2::element_text(angle = 0, size = 17.5),
+                axis.text.y = ggplot2::element_text(size = 17.5),
+                axis.title.x = ggplot2::element_text(size = 17.5),
+                axis.title.y = ggplot2::element_text(size = 17.5),
+                legend.text = ggplot2::element_text(size = 17.5),
+                legend.position = "inside",
+                legend.justification = c(-0.01,1))
+  return(fig)
+}
+
+plot_pcm_output = \(g){
+  pval = g$pxmap |>
+        dplyr::slice_tail(n = 1) |>
+        dplyr::select(y_xmap_x_sig,x_xmap_y_sig) |>
+        unlist() |>
+        round(3)
+  legend_texts = c(paste0(toupper(g$varname[2]), " xmap ", toupper(g$varname[1]), " | ",
+                          paste0(toupper(g$varname[-c(1,2)]), collapse = " & ")),
+                   paste0(toupper(g$varname[1]), " xmap ", toupper(g$varname[2]), " | ",
+                          paste0(toupper(g$varname[-c(1,2)]), collapse = " & "))) |> 
+      paste0(", P = ",pval)
+  
+  fig = plot(g, family = "serif",
+             xlimits = c(10,1030),
+             ylimits = c(-0.05,0.75), 
+             ybreaks = seq(-0.05,0.75,0.1),
+             legend_texts = legend_texts) +
+    ggplot2::theme(
+                axis.text.x = ggplot2::element_text(angle = 0, size = 17.5),
+                axis.text.y = ggplot2::element_text(size = 17.5),
+                axis.title.x = ggplot2::element_text(size = 17.5),
+                axis.title.y = ggplot2::element_text(size = 17.5),
+                legend.text = ggplot2::element_text(size = 17.5),
+                legend.position = "inside",
+                legend.justification = c(-0.01,1))
+  return(fig)
+}
