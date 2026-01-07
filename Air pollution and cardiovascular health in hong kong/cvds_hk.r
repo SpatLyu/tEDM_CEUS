@@ -20,17 +20,17 @@ fig_cvd_ts + ggview::canvas(6.5,3.75)
 
 tEDM::fnn(cvd,"cvd",E = 2:50,eps = stats::sd(cvd$cvd))
 
-tEDM::simplex(cvd,"cvd","cvd",E = 11:25,k = 12:26)
-tEDM::simplex(cvd,"rsp","rsp",E = 11:25,k = 12:26)
-tEDM::simplex(cvd,"no2","no2",E = 11:25,k = 12:26)
-tEDM::simplex(cvd,"so2","so2",E = 11:25,k = 12:26)
-tEDM::simplex(cvd,"o3","o3",E = 11:25,k = 12:26)
+tEDM::simplex(cvd,"cvd","cvd",E = 7:10,k = 8:12)
+tEDM::simplex(cvd,"rsp","rsp",E = 7:10,k = 8:12)
+tEDM::simplex(cvd,"no2","no2",E = 7:10,k = 8:12)
+tEDM::simplex(cvd,"so2","so2",E = 7:10,k = 8:12)
+tEDM::simplex(cvd,"o3","o3",E = 7:10,k = 8:12)
 
-s1 = tEDM::simplex(cvd,"cvd","cvd",E = 11,k = 12:26)
-s2 = tEDM::simplex(cvd,"rsp","rsp",E = 11,k = 12:26)
-s3 = tEDM::simplex(cvd,"no2","no2",E = 11,k = 12:26)
-s4 = tEDM::simplex(cvd,"so2","so2",E = 11,k = 12:26)
-s5 = tEDM::simplex(cvd,"o3","o3",E = 11,k = 12:26)
+s1 = tEDM::simplex(cvd,"cvd","cvd",E = 7,k = 8:12)
+s2 = tEDM::simplex(cvd,"rsp","rsp",E = 7,k = 8:12)
+s3 = tEDM::simplex(cvd,"no2","no2",E = 7,k = 8:12)
+s4 = tEDM::simplex(cvd,"so2","so2",E = 7,k = 8:12)
+s5 = tEDM::simplex(cvd,"o3","o3",E = 7,k = 8:12)
 
 list(s1,s2,s3,s4,s5)
 
@@ -53,8 +53,8 @@ for (pair in var_pairs) {
                          cause = var2,
                          effect = var1,
                          conds = conds,
-                         libsizes = seq(12, 1012, 100),
-                         E = 11, k = 12)
+                         libsizes = seq(20, 1020, 100),
+                         E = 7, k = 8)
 }
 readr::write_rds(res,'./Air pollution and cardiovascular health in hong kong/cvds_hk.rds')
 
