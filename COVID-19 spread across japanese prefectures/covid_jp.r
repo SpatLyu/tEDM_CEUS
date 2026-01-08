@@ -7,7 +7,7 @@ covid = covid |>
   dplyr::mutate(dplyr::across(dplyr::everything(),
                               \(.x) c(NA,diff(.x))))
 
-tEDM::fnn(covid,"Tokyo",E = 2:30,eps = stats::sd(covid$Tokyo)/10)
+tEDM::fnn(covid,"Tokyo",E = 2:30,eps = stats::sd(covid$Tokyo))
 
 tEDM::simplex(covid,"Tokyo","Tokyo",E = 4:50,k = 5:60)
 
