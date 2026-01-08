@@ -59,23 +59,6 @@ plot_cs_matrix = \(.tbf,legend_title = expression(rho)){
   return(fig)
 }
 
-.extract_prefix = \(x, case = c("title", "upper")) {
-  case = match.arg(case)
-  prefix = sub("_.*", "", x)
-  prefix = ifelse(prefix == x & !grepl("_", x), x, prefix)
-  
-  if (case == "title") {
-    result = paste0(
-      toupper(substr(prefix, 1, 1)),
-      tolower(substr(prefix, 2, nchar(prefix)))
-    )
-  } else if (case == "upper") {
-    result = toupper(prefix)
-  }
-  
-  return(result)
-}
-
 plot_ccm_output = \(g){
   pval = g$xmap |>
         dplyr::slice_tail(n = 1) |>
