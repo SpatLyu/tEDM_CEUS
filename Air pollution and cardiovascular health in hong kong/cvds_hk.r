@@ -18,6 +18,10 @@ fig_cvd_ts = ggplot2::ggplot(cvd_long, ggplot2::aes(x = id, y = value, color = v
                  legend.background = ggplot2::element_rect(fill = "transparent", color = NA))
 fig_cvd_ts + ggview::canvas(6.5,3.75)
 
+#-----------------------------------------------------------------------------#
+#------                Partial Cross Mapping analysis                   ------#
+#-----------------------------------------------------------------------------#
+
 tEDM::fnn(cvd,"cvd",E = 2:50,eps = stats::sd(cvd$cvd))
 
 tEDM::simplex(cvd,"cvd","cvd",E = 7:10,k = 8:12)
@@ -57,10 +61,10 @@ for (pair in var_pairs) {
                          libsizes = seq(20, 1020, 100),
                          E = 7, k = 8)
 }
-readr::write_rds(res,'./Air pollution and cardiovascular health in hong kong/cvds_hk.rds')
+readr::write_rds(res,'./Air pollution and cardiovascular health in hong kong/cvds_hk_pcm.rds')
 
 source('./Air pollution and cardiovascular health in hong kong/utils.r')
-res = readr::read_rds('./Air pollution and cardiovascular health in hong kong/cvds_hk.rds')
+res = readr::read_rds('./Air pollution and cardiovascular health in hong kong/cvds_hk_pcm.rds')
 ccm_df = purrr::map_dfr(res,\(.list) .process_xmap_result(.list,type = "xmap"))
 pcm_df = purrr::map_dfr(res,\(.list) .process_xmap_result(.list,type = "pxmap"))
 fig_cs = plot_cs_matrix(ccm_df)
@@ -75,12 +79,10 @@ fig_cvds_hk = fig_cvd_ts / (fig_pcs | fig_causal_link) +
 
 fig_cvds_hk + ggview::canvas(7.65,6.5)
 ggview::save_ggplot(fig_cvds_hk + ggview::canvas(7.65,6.5),
-                    './Air pollution and cardiovascular health in hong kong/cvds_hk.pdf',
+                    './Air pollution and cardiovascular health in hong kong/cvds_hk_pcm.pdf',
                     device = cairo_pdf)
 
-#------------------------------------------------------------------------------#
-#----------------              Appendix figure               ------------------#
-#------------------------------------------------------------------------------#
+# Convergence plot of cross mapping
 
 theme_crossmapping = ggplot2::theme(
                 axis.text.x = ggplot2::element_text(angle = 30, size = 11),
@@ -135,5 +137,5 @@ fig_appendix = cowplot::plot_grid(fig_cvd_rsp, fig_cvd_rsp_p, fig_cvd_no2, fig_c
                                   label_x = -0.005, label_y = 1)
 fig_appendix + ggview::canvas(16.55,18.55)
 ggview::save_ggplot(fig_appendix + ggview::canvas(16.55,18.55),
-                    './Air pollution and cardiovascular health in hong kong/appendix.pdf',
+                    './Air pollution and cardiovascular health in hong kong/cvds_hk_convergence.pdf',
                     device = cairo_pdf)
