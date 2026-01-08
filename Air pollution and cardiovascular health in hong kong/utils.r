@@ -59,7 +59,8 @@ plot_cs_matrix = \(.tbf,legend_title = expression(rho)){
   return(fig)
 }
 
-plot_ccm_output = \(g, xlimits = c(0,1040),
+plot_ccm_output = \(g, xlimits = c(-10,1050),
+                    xbreaks = seq(20,1020,200),
                     ylimits = c(-0.05,0.75), 
                     ybreaks = seq(-0.05,0.75,0.1)){
   pval = g$xmap |>
@@ -79,7 +80,8 @@ plot_ccm_output = \(g, xlimits = c(0,1040),
   return(fig)
 }
 
-plot_pcm_output = \(g, xlimits = c(0,1040),
+plot_pcm_output = \(g, xlimits = c(-10,1050),
+                    xbreaks = seq(20,1020,200),
                     ylimits = c(-0.05,0.75), 
                     ybreaks = seq(-0.05,0.75,0.1)){
   pval = g$pxmap |>
