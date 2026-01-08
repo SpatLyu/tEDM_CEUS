@@ -147,4 +147,12 @@ ggview::save_ggplot(fig_appendix + ggview::canvas(16.55,18.55),
 cvd_stat = list(C = cor(cvd), n = nrow(cvd))
 pc_cvd = pcalg::pc(cvd_stat, indepTest = pcalg::gaussCItest, 
                    labels = colnames(cvd), alpha = 0.05, skel.method = "stable.fast")
+readr::write_rds(pc_cvd,'./Air pollution and cardiovascular health in hong kong/res_pc.rds')
+
+pc_cvd = readr::read_rds('./Air pollution and cardiovascular health in hong kong/res_pc.rds')
 pcalg::plot(pc_cvd, main = "")
+
+pdf("./Air pollution and cardiovascular health in hong kong/cvds_hk_pc.pdf", 
+    width = 8, height = 6)
+pcalg::plot(pc_cvd, main = "")
+dev.off()
