@@ -58,3 +58,47 @@ plot_cs_matrix = \(.tbf,legend_title = expression(rho)){
     )
   return(fig)
 }
+
+plot_ccm_output = \(g, xlimits = c(-10,1050),
+                    xbreaks = seq(20,1020,200),
+                    ylimits = c(-0.05,0.75), 
+                    ybreaks = seq(-0.05,0.75,0.1)){
+  pval = g$xmap |>
+        dplyr::slice_tail(n = 1) |>
+        dplyr::select(y_xmap_x_sig,x_xmap_y_sig) |>
+        unlist() |>
+        round(3)
+  legend_texts = c(paste0(toupper(g$varname[2]), " xmap ", toupper(g$varname[1])),
+                   paste0(toupper(g$varname[1]), " xmap ", toupper(g$varname[2]))) |> 
+      paste0(", P = ",pval)
+  
+  fig = plot(g, family = "serif", partial = F,
+             xlimits = xlimits,
+             ylimits = ylimits, 
+             ybreaks = ybreaks,
+             legend_texts = legend_texts)
+  return(fig)
+}
+
+plot_pcm_output = \(g, xlimits = c(-10,1050),
+                    xbreaks = seq(20,1020,200),
+                    ylimits = c(-0.05,0.75), 
+                    ybreaks = seq(-0.05,0.75,0.1)){
+  pval = g$pxmap |>
+        dplyr::slice_tail(n = 1) |>
+        dplyr::select(y_xmap_x_sig,x_xmap_y_sig) |>
+        unlist() |>
+        round(3)
+  legend_texts = c(paste0(toupper(g$varname[2]), " xmap ", toupper(g$varname[1]), " | ",
+                          paste0(toupper(g$varname[-c(1,2)]), collapse = " & ")),
+                   paste0(toupper(g$varname[1]), " xmap ", toupper(g$varname[2]), " | ",
+                          paste0(toupper(g$varname[-c(1,2)]), collapse = " & "))) |> 
+      paste0(", P = ",pval)
+  
+  fig = plot(g, family = "serif",
+             xlimits = xlimits,
+             ylimits = ylimits, 
+             ybreaks = ybreaks,
+             legend_texts = legend_texts)
+  return(fig)
+}
