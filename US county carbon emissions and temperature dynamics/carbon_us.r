@@ -3,12 +3,16 @@ library(tEDM)
 carbon = readr::read_csv(system.file("case/carbon.csv.gz",package = "tEDM"))
 head(carbon)
 
+#-----------------------------------------------------------------------------#
+#------              Cross Mapping Cardinality analysis                 ------#
+#-----------------------------------------------------------------------------#
+
 carbon_list = dplyr::group_split(carbon, by = fips)
 length(carbon_list)
 
-purrr::map(carbon_list,
-           \(.x) tEDM::fnn(.x, "carbon", E = 2:10,
-                           eps = stats::sd(.x$carbon))) -> carbon_fnn
+# purrr::map(carbon_list,
+#            \(.x) tEDM::fnn(.x, "carbon", E = 2:10,
+#                            eps = stats::sd(.x$carbon)))
 
 tEDM::fnn(carbon_list[[100]],"carbon",E = 2:10,
           eps = stats::sd(carbon_list[[100]]$carbon))
@@ -47,3 +51,28 @@ fig_county_us + ggview::canvas(4.5,4.5,dpi = 300)
 ggview::save_ggplot(fig_county_us + ggview::canvas(4.5,4.5,dpi = 300),
                     "./US county carbon emissions and temperature dynamics/carbon_us.pdf",
                     device = cairo_pdf)
+
+#-----------------------------------------------------------------------------#
+#------                 Granger Causality analysis                    ------#
+#-----------------------------------------------------------------------------#
+
+res_gc = carbon_list |>
+  purrr::map_dfr(\(.x) {
+    f1 = lmtest::grangertest(tem ~ carbon, order = 3, data = .x)
+    f2 = lmtest::grangertest(carbon ~ tem, order = 3, data = .x)
+    return(tibble::tibble(
+      carbon_tem = f1$`Pr(>F)`[2],
+      tem_carbon = f2$`Pr(>F)`[2]
+    ))
+  })
+head(res_gc)
+
+a = lmtest::grangertest(tem ~ carbon, order = 2, data = carbon_list[[1]])
+b = lmtest::grangertest(carbon ~ tem, order = 2, data = carbon_list[[5]])
+
+carbon_df = dplyr::select(carbon,tem,carbon)
+suff_stat = list(C = cor(carbon_df), n = nrow(carbon_df))
+pc_carbon = pcalg::pc(suff_stat, indepTest = pcalg::gaussCItest, 
+                      labels = colnames(carbon_df), alpha = 0.05, skel.method = "stable.fast")
+
+pcalg::plot(pc_carbon, main = "")
