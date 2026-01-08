@@ -59,7 +59,9 @@ plot_cs_matrix = \(.tbf,legend_title = expression(rho)){
   return(fig)
 }
 
-plot_ccm_output = \(g){
+plot_ccm_output = \(g, xlimits = c(0,1040),
+                    ylimits = c(-0.05,0.75), 
+                    ybreaks = seq(-0.05,0.75,0.1)){
   pval = g$xmap |>
         dplyr::slice_tail(n = 1) |>
         dplyr::select(y_xmap_x_sig,x_xmap_y_sig) |>
@@ -70,22 +72,16 @@ plot_ccm_output = \(g){
       paste0(", P = ",pval)
   
   fig = plot(g, family = "serif", partial = F,
-             xlimits = c(10,1030),
-             ylimits = c(-0.05,0.75), 
-             ybreaks = seq(-0.05,0.75,0.1),
-             legend_texts = legend_texts) +
-    ggplot2::theme(
-                axis.text.x = ggplot2::element_text(angle = 0, size = 17.5),
-                axis.text.y = ggplot2::element_text(size = 17.5),
-                axis.title.x = ggplot2::element_text(size = 17.5),
-                axis.title.y = ggplot2::element_text(size = 17.5),
-                legend.text = ggplot2::element_text(size = 17.5),
-                legend.position = "inside",
-                legend.justification = c(-0.01,1))
+             xlimits = xlimits,
+             ylimits = ylimits, 
+             ybreaks = ybreaks,
+             legend_texts = legend_texts)
   return(fig)
 }
 
-plot_pcm_output = \(g){
+plot_pcm_output = \(g, xlimits = c(0,1040),
+                    ylimits = c(-0.05,0.75), 
+                    ybreaks = seq(-0.05,0.75,0.1)){
   pval = g$pxmap |>
         dplyr::slice_tail(n = 1) |>
         dplyr::select(y_xmap_x_sig,x_xmap_y_sig) |>
@@ -98,17 +94,9 @@ plot_pcm_output = \(g){
       paste0(", P = ",pval)
   
   fig = plot(g, family = "serif",
-             xlimits = c(10,1030),
-             ylimits = c(-0.05,0.75), 
-             ybreaks = seq(-0.05,0.75,0.1),
-             legend_texts = legend_texts) +
-    ggplot2::theme(
-                axis.text.x = ggplot2::element_text(angle = 0, size = 17.5),
-                axis.text.y = ggplot2::element_text(size = 17.5),
-                axis.title.x = ggplot2::element_text(size = 17.5),
-                axis.title.y = ggplot2::element_text(size = 17.5),
-                legend.text = ggplot2::element_text(size = 17.5),
-                legend.position = "inside",
-                legend.justification = c(-0.01,1))
+             xlimits = xlimits,
+             ylimits = ylimits, 
+             ybreaks = ybreaks,
+             legend_texts = legend_texts)
   return(fig)
 }
