@@ -82,135 +82,48 @@ ggview::save_ggplot(fig_cvds_hk + ggview::canvas(7.65,6.5),
 #----------------              Appendix figure               ------------------#
 #------------------------------------------------------------------------------#
 
-fig_cvd_rsp = plot_ccm_output(res[["cvd_rsp"]])
-fig_cvd_rsp_p = plot_pcm_output(res[["cvd_rsp"]])
+theme_crossmapping = ggplot2::theme(
+                axis.text.x = ggplot2::element_text(angle = 30, size = 11),
+                axis.text.y = ggplot2::element_text(size = 11),
+                axis.title.x = ggplot2::element_text(size = 11),
+                axis.title.y = ggplot2::element_text(size = 11),
+                legend.text = ggplot2::element_text(size = 11),
+                legend.position = "inside",
+                legend.justification = c(-0.01,1))
 
-fig_cvd_no2 = plot_ccm_output(res[["cvd_no2"]])
-fig_cvd_no2_p = plot_pcm_output(res[["cvd_no2"]])
+fig_cvd_rsp = plot_ccm_output(res[["cvd_rsp"]]) + theme_crossmapping
+fig_cvd_rsp_p = plot_pcm_output(res[["cvd_rsp"]]) + theme_crossmapping
 
-fig_cvd_so2 = plot_ccm_output(res[["cvd_so2"]])
-fig_cvd_so2_p = plot_pcm_output(res[["cvd_so2"]])
+fig_cvd_no2 = plot_ccm_output(res[["cvd_no2"]]) + theme_crossmapping
+fig_cvd_no2_p = plot_pcm_output(res[["cvd_no2"]]) + theme_crossmapping
 
-fig_cvd_o3 = plot_ccm_output(res[["cvd_o3"]])
-fig_cvd_o3_p = plot_pcm_output(res[["cvd_o3"]])
+fig_cvd_so2 = plot_ccm_output(res[["cvd_so2"]]) + theme_crossmapping
+fig_cvd_so2_p = plot_pcm_output(res[["cvd_so2"]]) + theme_crossmapping
 
-fig_rsp_no2 = plot_ccm_output(res[["rsp_no2"]])
-fig_rsp_no2_p = plot_pcm_output(res[["rsp_no2"]])
+fig_cvd_o3 = plot_ccm_output(res[["cvd_o3"]]) + theme_crossmapping
+fig_cvd_o3_p = plot_pcm_output(res[["cvd_o3"]]) + theme_crossmapping
 
-fig_rsp_so2 = plot_ccm_output(res[["rsp_so2"]])
-fig_rsp_so2_p = plot_pcm_output(res[["rsp_so2"]])
+fig_rsp_no2 = plot_ccm_output(res[["rsp_no2"]],
+                              ylimits = c(0.1,1), 
+                              ybreaks = seq(0.1,1,0.1)) + theme_crossmapping
+fig_rsp_no2_p = plot_pcm_output(res[["rsp_no2"]],
+                                ylimits = c(0.1,1), 
+                                ybreaks = seq(0.1,1,0.1)) + theme_crossmapping
 
-fig_rsp_o3 = plot_ccm_output(res[["rsp_o3"]])
-fig_rsp_o3_p = plot_pcm_output(res[["rsp_o3"]])
+fig_rsp_so2 = plot_ccm_output(res[["rsp_so2"]]) + theme_crossmapping
+fig_rsp_so2_p = plot_pcm_output(res[["rsp_so2"]]) + theme_crossmapping
 
-fig_no2_so2 = plot_ccm_output(res[["no2_so2"]])
-fig_no2_so2_p = plot_pcm_output(res[["no2_so2"]])
+fig_rsp_o3 = plot_ccm_output(res[["rsp_o3"]]) + theme_crossmapping
+fig_rsp_o3_p = plot_pcm_output(res[["rsp_o3"]]) + theme_crossmapping
 
-fig_no2_o3 = plot_ccm_output(res[["no2_o3"]])
-fig_no2_o3_p = plot_pcm_output(res[["no2_o3"]])
+fig_no2_so2 = plot_ccm_output(res[["no2_so2"]]) + theme_crossmapping
+fig_no2_so2_p = plot_pcm_output(res[["no2_so2"]]) + theme_crossmapping
 
-fig_so2_o3 = plot_ccm_output(res[["so2_o3"]])
-fig_so2_o3_p = plot_pcm_output(res[["so2_o3"]])
+fig_no2_o3 = plot_ccm_output(res[["no2_o3"]]) + theme_crossmapping
+fig_no2_o3_p = plot_pcm_output(res[["no2_o3"]]) + theme_crossmapping
 
-fig_cvd_rsp = plot(res[["cvd_rsp"]], partial = FALSE,
-                   xlimits = c(0,1030), ylimits = c(-0.01,0.2),
-                   ybreaks = seq(0,0.2,by = 0.05),
-                   legend_texts = c("CVD xmap RSP, P = 0",
-                                    "RSP xmap CVD, P = 0.001"))
-fig_cvd_rsp_p = plot(res[["cvd_rsp"]], xlimits = c(0,1030),
-                     ylimits = c(-0.01,0.2), ybreaks = seq(0,0.2,by = 0.05),
-                     legend_texts = c("CVD xmap RSP | NO2 & SO2 & O3, P = 0",
-                                      "RSP xmap CVD | NO2 & SO2 & O3, P = 0.0179"))
-
-fig_cvd_no2 = plot(res[["cvd_no2"]], partial = FALSE,
-                   xlimits = c(0,1030), ylimits = c(0,0.35),
-                   ybreaks = seq(0,0.35,by = 0.05),
-                   legend_texts = c("CVD xmap NO2, P = 0",
-                                    "NO2 xmap CVD, P = 0"))
-fig_cvd_no2_p = plot(res[["cvd_no2"]], xlimits = c(0,1030), 
-                     ylimits = c(0,0.35), ybreaks = seq(0,0.35,by = 0.05),
-                     legend_texts = c("CVD xmap NO2 | RSP & SO2 & O3, P = 0",
-                                      "NO2 xmap CVD | RSP & SO2 & O3, P = 0"))
-
-fig_cvd_so2 = plot(res[["cvd_so2"]], partial = FALSE,
-                   xlimits = c(0,1030), ylimits = c(0,0.25), 
-                   ybreaks = seq(0,0.25,by = 0.05),
-                   legend_texts = c("CVD xmap SO2, P = 0",
-                                    "SO2 xmap CVD, P = 0"))
-fig_cvd_so2_p = plot(res[["cvd_so2"]], xlimits = c(0,1030), 
-                     ylimits = c(0,0.25), ybreaks = seq(0,0.25,by = 0.05),
-                     legend_texts = c("CVD xmap SO2 | RSP & NO2 & O3, P = 0",
-                                      "SO2 xmap CVD | RSP & NO2 & O3, P = 0.003"))
-
-fig_cvd_o3 = plot(res[["cvd_o3"]], partial = FALSE,
-                  xlimits = c(0,1030), ylimits = c(-0.05,0.35),
-                  ybreaks = seq(-0.05,0.35,by = 0.1),
-                  legend_texts = c("CVD xmap O3, P = 0.495",
-                                   "O3 xmap CVD, P = 0.002"))
-fig_cvd_o3_p = plot(res[["cvd_o3"]], xlimits = c(0,1030), 
-                    ylimits = c(-0.05,0.35), ybreaks = seq(-0.05,0.35,by = 0.1),
-                    legend_texts = c("CVD xmap O3 | RSP & NO2 & SO2, P = 0.402",
-                                     "O3 xmap CVD | RSP & NO2 & SO2, P = 0.028"))
-
-fig_rsp_no2 = plot(res[["rsp_no2"]], partial = FALSE,
-                   xlimits = c(0,1030), ylimits = c(0.2,0.9), 
-                   ybreaks = seq(0.2,0.9,by = 0.1),
-                   legend_texts = c("RSP xmap NO2, P = 0",
-                                    "NO2 xmap RSP, P = 0"))
-fig_rsp_no2_p = plot(res[["rsp_no2"]], xlimits = c(0,1030), 
-                     ylimits = c(0.2,0.9), ybreaks = seq(0.2,0.9,by = 0.1),
-                     legend_texts = c("RSP xmap NO2 | CVD & SO2 & O3, P = 0",
-                                      "NO2 xmap RSP | CVD & SO2 & O3, P = 0"))
-
-fig_rsp_so2 = plot(res[["rsp_so2"]], partial = FALSE,
-                   xlimits = c(0,1030), ylimits = c(0.05,0.55), 
-                   ybreaks = seq(0.05,0.55,by = 0.1),
-                   legend_texts = c("RSP xmap SO2, P = 0",
-                                    "SO2 xmap RSP, P = 0"))
-fig_rsp_so2_p = plot(res[["rsp_so2"]], xlimits = c(0,1030), 
-                     ylimits = c(0.05,0.55), ybreaks = seq(0.05,0.55,by = 0.1),
-                     legend_texts = c("RSP xmap SO2 | CVD & NO2 & O3, P = 0",
-                                      "SO2 xmap RSP | CVD & NO2 & O3, P = 0"))
-
-fig_rsp_o3 = plot(res[["rsp_o3"]], partial = FALSE,
-                  xlimits = c(0,1030), ylimits = c(0.05,0.65),
-                  ybreaks = seq(0.05,0.65,by = 0.1),
-                  legend_texts = c("RSP xmap O3, P = 0",
-                                   "O3 xmap RSP, P = 0"))
-fig_rsp_o3_p = plot(res[["rsp_o3"]], xlimits = c(0,1030), 
-                    ylimits = c(0.05,0.65), ybreaks = seq(0.05,0.65,by = 0.1),
-                    legend_texts = c("RSP xmap O3 | CVD & SO2 & NO2, P = 0",
-                                     "O3 xmap RSP | CVD & SO2 & NO2, P = 0"))
-
-fig_no2_so2 = plot(res[["no2_so2"]], partial = FALSE,
-                   xlimits = c(0,1030), ylimits = c(0.15,0.75), 
-                   ybreaks = seq(0.15,0.75,by = 0.1),
-                   legend_texts = c("NO2 xmap SO2, P = 0",
-                                    "SO2 xmap NO2, P = 0"))
-fig_no2_so2_p = plot(res[["no2_so2"]], xlimits = c(0,1030), 
-                     ylimits = c(0.15,0.75), ybreaks = seq(0.15,0.75,by = 0.1),
-                     legend_texts = c("NO2 xmap SO2 | CVD & RSP & O3, P = 0",
-                                      "SO2 xmap NO2 | CVD & RSP & O3, P = 0"))
-
-fig_no2_o3 = plot(res[["no2_o3"]], partial = FALSE,
-                  xlimits = c(0,1030), ylimits = c(0.05,0.65), 
-                  ybreaks = seq(0.05,0.65,by = 0.1),
-                  legend_texts = c("NO2 xmap O3, P = 0",
-                                   "O3 xmap NO2, P = 0"))
-fig_no2_o3_p = plot(res[["no2_o3"]], xlimits = c(0,1030), 
-                    ylimits = c(0.05,0.65), ybreaks = seq(0.05,0.65,by = 0.1),
-                    legend_texts = c("NO2 xmap O3 | CVD & RSP & SO2, P = 0",
-                                     "O3 xmap NO2 | CVD & RSP & SO2, P = 0"))
-
-fig_so2_o3 = plot(res[["so2_o3"]], partial = FALSE,
-                  xlimits = c(0,1030), ylimits = c(-0.05,0.45),
-                  ybreaks = seq(-0.05,0.45,by = 0.1),
-                  legend_texts = c("SO2 xmap O3, P = 0",
-                                   "O3 xmap SO2, P = 0.094"))
-fig_so2_o3_p = plot(res[["so2_o3"]], xlimits = c(0,1030), 
-                    ylimits = c(-0.05,0.45), ybreaks = seq(-0.05,0.45,by = 0.1),
-                    legend_texts = c("SO2 xmap O3 | CVD & RSP & NO2, P = 0",
-                                     "O3 xmap SO2 | CVD & RSP & NO2, P = 0.131"))
+fig_so2_o3 = plot_ccm_output(res[["so2_o3"]]) + theme_crossmapping
+fig_so2_o3_p = plot_pcm_output(res[["so2_o3"]]) + theme_crossmapping
 
 fig_appendix = cowplot::plot_grid(fig_cvd_rsp, fig_cvd_rsp_p, fig_cvd_no2, fig_cvd_no2_p,  
                                   fig_cvd_so2, fig_cvd_so2_p, fig_cvd_o3, fig_cvd_o3_p,  
@@ -220,7 +133,7 @@ fig_appendix = cowplot::plot_grid(fig_cvd_rsp, fig_cvd_rsp_p, fig_cvd_no2, fig_c
                                   ncol = 4, label_fontfamily = 'serif',
                                   labels = letters[1:20],
                                   label_x = -0.005, label_y = 1)
-fig_appendix + ggview::canvas(15.55,18.55)
-ggview::save_ggplot(fig_appendix + ggview::canvas(15.55,18.55),
+fig_appendix + ggview::canvas(16.55,18.55)
+ggview::save_ggplot(fig_appendix + ggview::canvas(16.55,18.55),
                     './Air pollution and cardiovascular health in hong kong/appendix.pdf',
                     device = cairo_pdf)
