@@ -34,6 +34,7 @@ res_carbon$variable = factor(res_carbon$variable,
 fig_county_us = ggplot2::ggplot(res_carbon,
                             ggplot2::aes(x = variable, y = value, fill = variable)) +
   ggplot2::geom_boxplot() +
+  ggplot2::geom_hline(yintercept = 0.2, linetype = "dashed", color = "gray50") +
   ggplot2::theme_bw() +
   ggplot2::scale_x_discrete(name = "") +
   ggplot2::scale_y_continuous(name = "Causal Strength",
