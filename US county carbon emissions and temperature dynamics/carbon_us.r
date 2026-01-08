@@ -58,7 +58,7 @@ ggview::save_ggplot(fig_cmc + ggview::canvas(4.5,4.5,dpi = 300),
                     device = cairo_pdf)
 
 #-----------------------------------------------------------------------------#
-#------                 Granger Causality analysis                    ------#
+#------                  Granger Causality analysis                     ------#
 #-----------------------------------------------------------------------------#
 
 res_gc = carbon_list |>
@@ -104,10 +104,3 @@ fig_gc + ggview::canvas(4.5, 4.5, dpi = 300)
 ggview::save_ggplot(fig_gc + ggview::canvas(4.5, 4.5, dpi = 300),
                     "./US county carbon emissions and temperature dynamics/carbon_us_gc.pdf",
                     device = cairo_pdf)
-
-carbon_df = dplyr::select(carbon,tem,carbon)
-suff_stat = list(C = cor(carbon_df), n = nrow(carbon_df))
-pc_carbon = pcalg::pc(suff_stat, indepTest = pcalg::gaussCItest, 
-                      labels = colnames(carbon_df), alpha = 0.05, skel.method = "stable.fast")
-
-pcalg::plot(pc_carbon, main = "")

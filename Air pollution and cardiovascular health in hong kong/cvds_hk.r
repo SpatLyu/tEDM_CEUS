@@ -61,10 +61,10 @@ for (pair in var_pairs) {
                          libsizes = seq(20, 1020, 100),
                          E = 7, k = 8)
 }
-readr::write_rds(res,'./Air pollution and cardiovascular health in hong kong/cvds_hk_pcm.rds')
+readr::write_rds(res,'./Air pollution and cardiovascular health in hong kong/res_pcm.rds')
 
 source('./Air pollution and cardiovascular health in hong kong/utils.r')
-res = readr::read_rds('./Air pollution and cardiovascular health in hong kong/cvds_hk_pcm.rds')
+res = readr::read_rds('./Air pollution and cardiovascular health in hong kong/res_pcm.rds')
 ccm_df = purrr::map_dfr(res,\(.list) .process_xmap_result(.list,type = "xmap"))
 pcm_df = purrr::map_dfr(res,\(.list) .process_xmap_result(.list,type = "pxmap"))
 fig_cs = plot_cs_matrix(ccm_df)
@@ -139,3 +139,12 @@ fig_appendix + ggview::canvas(16.55,18.55)
 ggview::save_ggplot(fig_appendix + ggview::canvas(16.55,18.55),
                     './Air pollution and cardiovascular health in hong kong/cvds_hk_convergence.pdf',
                     device = cairo_pdf)
+
+#-----------------------------------------------------------------------------#
+#------                     PC algorithm analysis                       ------#
+#-----------------------------------------------------------------------------#
+
+cvd_stat = list(C = cor(cvd), n = nrow(cvd))
+pc_cvd = pcalg::pc(cvd_stat, indepTest = pcalg::gaussCItest, 
+                   labels = colnames(cvd), alpha = 0.05, skel.method = "stable.fast")
+pcalg::plot(pc_cvd, main = "")
