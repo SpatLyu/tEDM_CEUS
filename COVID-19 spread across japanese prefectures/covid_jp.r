@@ -7,6 +7,10 @@ covid = covid |>
   dplyr::mutate(dplyr::across(dplyr::everything(),
                               \(.x) c(NA,diff(.x))))
 
+#-----------------------------------------------------------------------------#
+#------               Convergent Cross Mapping analysis                 ------#
+#-----------------------------------------------------------------------------#
+
 tEDM::fnn(covid,"Tokyo",E = 2:30,eps = stats::sd(covid$Tokyo))
 
 tEDM::simplex(covid,"Tokyo","Tokyo",E = 4:50,k = 5:60)
@@ -74,5 +78,23 @@ fig_covid_jp = ggplot2::ggplot() +
 
 fig_covid_jp + ggview::canvas(5.55,3.15,dpi = 300)
 ggview::save_ggplot(fig_covid_jp + ggview::canvas(5.55,3.15,dpi = 300),
-                    './COVID-19 spread across japanese prefectures/covid_jp.pdf',
+                    './COVID-19 spread across japanese prefectures/covid_jp_ccm.pdf',
                     device = cairo_pdf)
+
+#-----------------------------------------------------------------------------#
+#------                     PC algorithm analysis                       ------#
+#-----------------------------------------------------------------------------#
+
+covid_stat = list(C = cor(covid), n = nrow(covid))
+pc_covid = pcalg::pc(covid_stat, indepTest = pcalg::gaussCItest, 
+                     labels = colnames(covid), alpha = 0.05, skel.method = "stable.fast")
+readr::write_rds(pc_covid,'./COVID-19 spread across japanese prefectures/res_pc.rds')
+
+pc_covid = readr::read_rds('./COVID-19 spread across japanese prefectures/res_pc.rds')
+pcalg::plot(pc_covid, main = "")
+
+pdf("./COVID-19 spread across japanese prefectures/covid_jp_pc.pdf", 
+    width = 8, height = 6)
+pcalg::plot(pc_covid, main = "")
+dev.off()
+
