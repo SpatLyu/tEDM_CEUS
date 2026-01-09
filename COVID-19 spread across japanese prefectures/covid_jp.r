@@ -5,15 +5,21 @@ head(covid)
 
 covid = covid |>
   dplyr::mutate(dplyr::across(dplyr::everything(),
-                              \(.x) c(NA,diff(.x))))
+                              \(.x) c(NA,diff(.x)))) |> 
+  dplyr::filter(dplyr::if_all(dplyr::everything(), 
+                \(.x) !is.na(.x)))
+
+#-----------------------------------------------------------------------------#
+#------               Convergent Cross Mapping analysis                 ------#
+#-----------------------------------------------------------------------------#
 
 tEDM::fnn(covid,"Tokyo",E = 2:30,eps = stats::sd(covid$Tokyo))
 
-tEDM::simplex(covid,"Tokyo","Tokyo",E = 4:50,k = 5:60)
+tEDM::simplex(covid,"Tokyo","Tokyo",E = 10:20,k = 11:25)
 
 res = names(covid)[-match("Tokyo",names(covid))] |>
   purrr::map_dfr(\(.l) {
-    g = tEDM::ccm(covid,"Tokyo",.l,E = 4,k = 7,progressbar = FALSE)
+    g = tEDM::ccm(covid,"Tokyo",.l,E = 10,k = 12,progressbar = FALSE)
     res = dplyr::mutate(g$xmap,x = "Tokyo",y = .l)
     return(res)
   })
@@ -34,6 +40,7 @@ res_covid = res_covid |>
   dplyr::mutate(cs = round(res_covid$cs,2)) |>
   dplyr::filter(cs >= 0.90)
 res_covid
+readr::write_rds(res_covid,'./COVID-19 spread across japanese prefectures/res_ccm.rds')
 
 if (!requireNamespace("rnaturalearth")) {
   install.packages("rnaturalearth")
@@ -43,8 +50,9 @@ jp = rnaturalearth::ne_states(country = "Japan")
 if (!requireNamespace("tidygeocoder")) {
   install.packages("tidygeocoder")
 }
+res_covid = readr::read_rds('./COVID-19 spread across japanese prefectures/res_ccm.rds')
 jpp = tibble::tibble(name = c("Tokyo",res_covid$effect)) |>
-  dplyr::mutate(type = factor(c("source",rep("target",6)),
+  dplyr::mutate(type = factor(c("source",rep("target",7)),
                               levels = c("source","target"))) |> 
   tidygeocoder::geocode(state = name, method = "arcgis",
                         long = "lon", lat = "lat")
@@ -73,6 +81,23 @@ fig_covid_jp = ggplot2::ggplot() +
   ggplot2::theme(panel.background = ggplot2::element_rect(fill = "#9cd1fd", color = NA))
 
 fig_covid_jp + ggview::canvas(5.55,3.15,dpi = 300)
-ggview::save_ggplot(fig_covid_jp + ggview::canvas(5.55,3.15,dpi = 300),
-                    './COVID-19 spread across japanese prefectures/covid_jp.pdf',
+ggview::save_ggplot(fig_covid_jp + ggview::canvas(5.55,3.15),
+                    './COVID-19 spread across japanese prefectures/covid_jp_ccm.pdf',
                     device = cairo_pdf)
+
+#-----------------------------------------------------------------------------#
+#------                     PC algorithm analysis                       ------#
+#-----------------------------------------------------------------------------#
+
+covid_stat = list(C = cor(covid), n = nrow(covid))
+pc_covid = pcalg::pc(covid_stat, indepTest = pcalg::gaussCItest, 
+                     labels = colnames(covid), alpha = 0.05, skel.method = "stable.fast")
+readr::write_rds(pc_covid,'./COVID-19 spread across japanese prefectures/res_pc.rds')
+
+pc_covid = readr::read_rds('./COVID-19 spread across japanese prefectures/res_pc.rds')
+pcalg::plot(pc_covid, main = "")
+
+pdf("./COVID-19 spread across japanese prefectures/covid_jp_pc.pdf", 
+    width = 8, height = 6)
+pcalg::plot(pc_covid, main = "")
+dev.off()
