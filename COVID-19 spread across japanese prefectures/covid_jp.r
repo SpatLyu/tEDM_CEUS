@@ -16,7 +16,6 @@ covid = covid |>
 tEDM::fnn(covid,"Tokyo",E = 2:30,eps = stats::sd(covid$Tokyo))
 
 tEDM::simplex(covid,"Tokyo","Tokyo",E = 10:20,k = 11:25)
-tEDM::simplex(covid,"Tokyo","Tokyo",E = 4:50,k = 5:60)
 
 res = names(covid)[-match("Tokyo",names(covid))] |>
   purrr::map_dfr(\(.l) {
@@ -72,7 +71,7 @@ fig_covid_jp = ggplot2::ggplot() +
                       size = 1.25, show.legend = FALSE) +
   ggrepel::geom_text_repel(data = jpp, 
                            ggplot2::aes(label = name, x = lon, y = lat, color = type),
-                           box.padding = 0.5, show.legend = FALSE) +
+                           show.legend = FALSE) +
   ggplot2::scale_color_manual(values = c(source = "#2c74b7", 
                                          target = "#cf574b")) +
   ggplot2::coord_sf(xlim = range(jpp$lon) + c(-0.45,0.45),
@@ -82,7 +81,7 @@ fig_covid_jp = ggplot2::ggplot() +
   ggplot2::theme(panel.background = ggplot2::element_rect(fill = "#9cd1fd", color = NA))
 
 fig_covid_jp + ggview::canvas(5.55,3.15,dpi = 300)
-ggview::save_ggplot(fig_covid_jp + ggview::canvas(5.55,3.15,dpi = 300),
+ggview::save_ggplot(fig_covid_jp + ggview::canvas(5.55,3.15),
                     './COVID-19 spread across japanese prefectures/covid_jp_ccm.pdf',
                     device = cairo_pdf)
 
