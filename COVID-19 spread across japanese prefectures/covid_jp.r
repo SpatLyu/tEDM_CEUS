@@ -78,10 +78,11 @@ fig_covid_jp = ggplot2::ggplot() +
                     ylim = range(jpp$lat) + c(-0.75,0.75)) +
   ggplot2::labs(x = "", y = "") +
   ggplot2::theme_bw() +
-  ggplot2::theme(panel.background = ggplot2::element_rect(fill = "#9cd1fd", color = NA))
+  ggplot2::theme(panel.background = ggplot2::element_rect(fill = "#9cd1fd", color = NA),
+                 plot.margin = ggplot2::margin(0, 0, 0, 0, unit = "cm"))
 
-fig_covid_jp + ggview::canvas(5.55,3.15,dpi = 300)
-ggview::save_ggplot(fig_covid_jp + ggview::canvas(5.55,3.15),
+fig_covid_jp + ggview::canvas(5.65,3.25,dpi = 300)
+ggview::save_ggplot(fig_covid_jp + ggview::canvas(5.65,3.25),
                     './COVID-19 spread across japanese prefectures/covid_jp_ccm.pdf',
                     device = cairo_pdf)
 
