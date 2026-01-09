@@ -112,15 +112,17 @@ Mx = GenStateSpace(lorenz[,"x"],E = 20,tau = 3)
 My = GenStateSpace(lorenz[,"y"],E = 20,tau = 3)
 
 # --- Plot Mx view ---
-png("./Schematic for temporal empirical dynamic modeling/Mx.png", width = 1600, height = 1600, res = 300, bg = "white")
+png("./Schematic for temporal empirical dynamic modeling/Mx.png", 
+    width = 1600, height = 1600, res = 300, bg = "white")
 plot3D::scatter3D(Mx[,3], Mx[,6], Mx[,9],
                   colvar = NULL, pch = 19, col = "#c7e0f6",
                   theta = 30, phi = 0, cex = 0.25, bty = "n")
 dev.off()
 
 # --- Plot MY view ---
-png("./Schematic for temporal empirical dynamic modeling/My.png", width = 1600, height = 1600, res = 300, bg = "white")
-plot3D::scatter3D(Mz[,3], Mz[,6], Mz[,9],
+png("./Schematic for temporal empirical dynamic modeling/My.png",
+    width = 1600, height = 1600, res = 300, bg = "white")
+plot3D::scatter3D(My[,3], My[,6], My[,9],
                   colvar = NULL, pch = 19, col = "#f8cccb",
-                  theta = 10, phi = 0, cex = 0.25, bty = "n")
+                  theta = 30, phi = 0, cex = 0.25, bty = "n")
 dev.off()
