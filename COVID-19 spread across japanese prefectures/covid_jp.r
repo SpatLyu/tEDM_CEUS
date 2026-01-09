@@ -5,7 +5,9 @@ head(covid)
 
 covid = covid |>
   dplyr::mutate(dplyr::across(dplyr::everything(),
-                              \(.x) c(NA,diff(.x))))
+                              \(.x) c(NA,diff(.x)))) |> 
+  dplyr::filter(dplyr::if_all(dplyr::everything(), 
+                \(.x) !is.na(.x)))
 
 #-----------------------------------------------------------------------------#
 #------               Convergent Cross Mapping analysis                 ------#
@@ -13,11 +15,12 @@ covid = covid |>
 
 tEDM::fnn(covid,"Tokyo",E = 2:30,eps = stats::sd(covid$Tokyo))
 
+tEDM::simplex(covid,"Tokyo","Tokyo",E = 10:20,k = 11:25)
 tEDM::simplex(covid,"Tokyo","Tokyo",E = 4:50,k = 5:60)
 
 res = names(covid)[-match("Tokyo",names(covid))] |>
   purrr::map_dfr(\(.l) {
-    g = tEDM::ccm(covid,"Tokyo",.l,E = 4,k = 7,progressbar = FALSE)
+    g = tEDM::ccm(covid,"Tokyo",.l,E = 10,k = 12,progressbar = FALSE)
     res = dplyr::mutate(g$xmap,x = "Tokyo",y = .l)
     return(res)
   })
@@ -38,6 +41,7 @@ res_covid = res_covid |>
   dplyr::mutate(cs = round(res_covid$cs,2)) |>
   dplyr::filter(cs >= 0.90)
 res_covid
+readr::write_rds(res_covid,'./COVID-19 spread across japanese prefectures/res_ccm.rds')
 
 if (!requireNamespace("rnaturalearth")) {
   install.packages("rnaturalearth")
@@ -47,8 +51,9 @@ jp = rnaturalearth::ne_states(country = "Japan")
 if (!requireNamespace("tidygeocoder")) {
   install.packages("tidygeocoder")
 }
+res_covid = readr::read_rds('./COVID-19 spread across japanese prefectures/res_ccm.rds')
 jpp = tibble::tibble(name = c("Tokyo",res_covid$effect)) |>
-  dplyr::mutate(type = factor(c("source",rep("target",6)),
+  dplyr::mutate(type = factor(c("source",rep("target",7)),
                               levels = c("source","target"))) |> 
   tidygeocoder::geocode(state = name, method = "arcgis",
                         long = "lon", lat = "lat")
@@ -67,7 +72,7 @@ fig_covid_jp = ggplot2::ggplot() +
                       size = 1.25, show.legend = FALSE) +
   ggrepel::geom_text_repel(data = jpp, 
                            ggplot2::aes(label = name, x = lon, y = lat, color = type),
-                           show.legend = FALSE) +
+                           box.padding = 0.5, show.legend = FALSE) +
   ggplot2::scale_color_manual(values = c(source = "#2c74b7", 
                                          target = "#cf574b")) +
   ggplot2::coord_sf(xlim = range(jpp$lon) + c(-0.45,0.45),
@@ -97,4 +102,3 @@ pdf("./COVID-19 spread across japanese prefectures/covid_jp_pc.pdf",
     width = 8, height = 6)
 pcalg::plot(pc_covid, main = "")
 dev.off()
-
