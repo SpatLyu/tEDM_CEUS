@@ -127,4 +127,5 @@ fig_multispatial = cowplot::plot_grid(fig_ccm, fig_multispatialccm, ncol = 2,
                                       label_x = -0.005, label_y = 1)
 fig_multispatial + ggview::canvas(9.05,4.5)
 ggview::save_ggplot(fig_multispatial + ggview::canvas(9.05,4.5),
-                    "carbon_us_multispatial.pdf", device = cairo_pdf)
+                    "./US county carbon emissions and temperature dynamics/carbon_us_multispatial.pdf", 
+                    device = cairo_pdf)
