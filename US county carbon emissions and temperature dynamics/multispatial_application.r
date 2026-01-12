@@ -78,15 +78,22 @@ ggview::save_ggplot(fig_ccm + ggview::canvas(4.5,4.5,dpi = 300),
 
 nb = spdep::read.gal('./US county carbon emissions and temperature dynamics/us_county.gal')
 
-res_multispatialccm = seq_along(carbon_list) |> 
-  purrr::map_dfr(\(.i) {
-    obs = carbon_list[c(nb[[.i]],.i)]
+construct_multiobs = \(.i){
+  obs = carbon_list[c(nb[[.i]],.i)]
     suppressMessages({
       obs_plot = list("tem" = purrr::map_dfc(obs,\(.x) dplyr::select(.x,tem)), 
                       "carbon" = purrr::map_dfc(obs,\(.x) dplyr::select(.x,carbon)))
     })
-    g = tEDM::multispatialccm(obs_plot,"tem","carbon",libsizes = length(obs),E = 3,k = 4,
-                              boot = 1, dist.metric = "L2", progressbar = FALSE)
+  return(obs_plot)
+}
+
+tEDM::simplex(construct_multiobs(1),"tem","carbon",E = 3:10,k = 4:15)
+
+res_multispatialccm = seq_along(carbon_list) |> 
+  purrr::map_dfr(\(.i) {
+    obs = construct_multiobs(.i)
+    g = tEDM::multispatialccm(obs,"tem","carbon",libsizes = length(obs),E = 3,k = 4,
+                              boot = 1,dist.metric = "L1",progressbar = FALSE)
     return(g$xmap)
   }) |>
   dplyr::select(libsizes,
