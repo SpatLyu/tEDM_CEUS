@@ -9,16 +9,14 @@ carbon = carbon |>
 carbon_list = dplyr::group_split(carbon, by = fips)
 names(carbon_list) = purrr::map_chr(carbon_list, \(.l) unique(.l$fips))
 
-# county_orders = tibble::tibble(fips = names(carbon_list))
-
 # us_counties = tigris::counties(resolution = "20m", year = 2017) |> 
 #   dplyr::select(fips = GEOID, name = NAME)
-# us_counties = county_orders |> 
+# us_counties = tibble::tibble(fips = names(carbon_list)) |> 
 #   dplyr::left_join(us_counties,by = "fips") |> 
 #   sf::st_as_sf()
 # plot(sf::st_geometry(us_counties))
 
-# nb = spdep::poly2nb(us_counties)
+# nb = sdsfun::spdep_nb(us_counties,k = 8)
 # spdep::write.nb.gal(nb,'./US county carbon emissions and temperature dynamics/us_county.gal')
 
 #-----------------------------------------------------------------------------#
@@ -54,23 +52,20 @@ readr::write_rds(res_ccm,"./US county carbon emissions and temperature dynamics/
 
 res_ccm = readr::read_rds("./US county carbon emissions and temperature dynamics/res_ccm.rds")
 fig_ccm = ggplot2::ggplot(res_ccm,
-                          ggplot2::aes(x = variable, y = value, fill = variable)) +
+                          ggplot2::aes(x = variable, y = abs(value), fill = variable)) +
   ggplot2::geom_boxplot() +
   ggplot2::geom_hline(yintercept = 0.2, linetype = "dashed", color = "red", linewidth = 0.8) +
   ggplot2::theme_bw() +
   ggplot2::scale_x_discrete(name = "") +
-  ggplot2::scale_y_continuous(name = "Cross Mapping Skill",
+  ggplot2::scale_y_continuous(name = "Cross Mapping Skill (CCM)",
                               expand = c(0,0),
-                              limits = c(-1,1),
-                              breaks = seq(-1,1,by = 0.2)) +
+                              limits = c(0,1),
+                              breaks = seq(0,1,by = 0.2)) +
   ggplot2::theme(legend.position = "none",
                  axis.text.x = ggplot2::element_text(size = 12),
                  axis.text.y = ggplot2::element_text(size = 12),
                  axis.title.y = ggplot2::element_text(size = 12.5))
 fig_ccm + ggview::canvas(4.5,4.5,dpi = 300)
-ggview::save_ggplot(fig_ccm + ggview::canvas(4.5,4.5,dpi = 300),
-                    "./US county carbon emissions and temperature dynamics/carbon_us_ccm.pdf",
-                    device = cairo_pdf)
 
 #-----------------------------------------------------------------------------#
 #------                   Multispatial CCM analysis                     ------#
@@ -92,7 +87,7 @@ tEDM::simplex(construct_multiobs(1),"tem","carbon",E = 3:10,k = 4:15)
 res_multispatialccm = seq_along(carbon_list) |> 
   purrr::map_dfr(\(.i) {
     obs = construct_multiobs(.i)
-    g = tEDM::multispatialccm(obs,"tem","carbon",libsizes = length(obs),E = 3,k = 4,
+    g = tEDM::multispatialccm(obs,"tem","carbon",libsizes = length(obs),E = 4,k = 5,
                               boot = 1,dist.metric = "L1",progressbar = FALSE)
     return(g$xmap)
   }) |>
@@ -111,20 +106,17 @@ readr::write_rds(res_multispatialccm,"./US county carbon emissions and temperatu
 
 res_multispatialccm = readr::read_rds("./US county carbon emissions and temperature dynamics/res_multispatialccm.rds")
 fig_multispatialccm = ggplot2::ggplot(res_multispatialccm,
-                                      ggplot2::aes(x = variable, y = value, fill = variable)) +
+                                      ggplot2::aes(x = variable, y = abs(value), fill = variable)) +
   ggplot2::geom_boxplot() +
   ggplot2::geom_hline(yintercept = 0.2, linetype = "dashed", color = "red", linewidth = 0.8) +
   ggplot2::theme_bw() +
   ggplot2::scale_x_discrete(name = "") +
-  ggplot2::scale_y_continuous(name = "Cross Mapping Skill",
+  ggplot2::scale_y_continuous(name = "Cross Mapping Skill (Multispatial CCM)",
                               expand = c(0,0),
-                              limits = c(-1,1),
-                              breaks = seq(-1,1,by = 0.2)) +
+                              limits = c(0,1),
+                              breaks = seq(0,1,by = 0.2)) +
   ggplot2::theme(legend.position = "none",
                  axis.text.x = ggplot2::element_text(size = 12),
                  axis.text.y = ggplot2::element_text(size = 12),
                  axis.title.y = ggplot2::element_text(size = 12.5))
 fig_multispatialccm + ggview::canvas(4.5,4.5,dpi = 300)
-ggview::save_ggplot(fig_ccm + ggview::canvas(4.5,4.5,dpi = 300),
-                    "./US county carbon emissions and temperature dynamics/carbon_us_ccm.pdf",
-                    device = cairo_pdf)
