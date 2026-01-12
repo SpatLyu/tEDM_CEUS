@@ -32,7 +32,7 @@ tEDM::fnn(carbon_list[[100]],"carbon",E = 2:10,
 
 res = carbon_list |>
   purrr::map_dfr(\(.x) {
-    g = tEDM::ccm(.x,"tem","carbon",E = 3,k = 4,dist.metric = "L2",progressbar = FALSE)
+    g = tEDM::ccm(.x,"tem","carbon",E = 3,k = 4,dist.metric = "L1",progressbar = FALSE)
     return(g$xmap)
   })
 head(res)
@@ -120,3 +120,11 @@ fig_multispatialccm = ggplot2::ggplot(res_multispatialccm,
                  axis.text.y = ggplot2::element_text(size = 12),
                  axis.title.y = ggplot2::element_text(size = 12.5))
 fig_multispatialccm + ggview::canvas(4.5,4.5,dpi = 300)
+
+fig_multispatial = cowplot::plot_grid(fig_ccm, fig_multispatialccm, ncol = 2,
+                                      label_fontfamily = "serif",
+                                      labels = letters[1:2],
+                                      label_x = -0.005, label_y = 1)
+fig_multispatial + ggview::canvas(9.05,4.5)
+ggview::save_ggplot(fig_multispatial + ggview::canvas(9.05,4.5),
+                    "carbon_us_multispatial.pdf", device = cairo_pdf)
