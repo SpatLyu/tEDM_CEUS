@@ -13,12 +13,19 @@ carbon = carbon |>
 carbon_list = dplyr::group_split(carbon, by = fips)
 names(carbon_list) = purrr::map_chr(carbon_list, \(.l) unique(.l$fips))
 
-us_counties = tigris::counties(resolution = "20m", year = 2017)
-us_counties = us_counties |> 
-  dplyr::select(fips = GEOID, name = NAME) |> 
-  dplyr::filter(fips %in% carbon$fips) |> 
-  dplyr::arrange(fips)
+county_orders = tibble::tibble(fips = names(carbon_list))
+
+us_counties = tigris::counties(resolution = "20m", year = 2017) |> 
+  dplyr::select(fips = GEOID, name = NAME)
+us_counties = county_orders |> 
+  dplyr::left_join(us_counties,by = "fips") |> 
+  sf::st_as_sf()
 plot(sf::st_geometry(us_counties))
+
+nb = spdep::poly2nb(us_counties)
+spdep::write.nb.gal(nb,'./US county carbon emissions and temperature dynamics/us_county.gal')
+
+nb = spdep::read.gal('./US county carbon emissions and temperature dynamics/us_county.gal')
 
 # purrr::map(carbon_list,
 #            \(.x) tEDM::fnn(.x, "carbon", E = 2:10,
