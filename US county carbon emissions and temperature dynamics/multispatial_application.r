@@ -57,7 +57,7 @@ fig_ccm = ggplot2::ggplot(res_ccm,
   ggplot2::geom_hline(yintercept = 0.2, linetype = "dashed", color = "red", linewidth = 0.8) +
   ggplot2::theme_bw() +
   ggplot2::scale_x_discrete(name = "") +
-  ggplot2::scale_y_continuous(name = "Cross Mapping Skill (CCM)",
+  ggplot2::scale_y_continuous(name = expression(paste("|", rho, "| (CCM)")),
                               expand = c(0,0),
                               limits = c(0,1),
                               breaks = seq(0,1,by = 0.2)) +
@@ -111,7 +111,7 @@ fig_multispatialccm = ggplot2::ggplot(res_multispatialccm,
   ggplot2::geom_hline(yintercept = 0.2, linetype = "dashed", color = "red", linewidth = 0.8) +
   ggplot2::theme_bw() +
   ggplot2::scale_x_discrete(name = "") +
-  ggplot2::scale_y_continuous(name = "Cross Mapping Skill (Multispatial CCM)",
+  ggplot2::scale_y_continuous(name = expression(paste("|", rho, "| (Multispatial CCM)")),
                               expand = c(0,0),
                               limits = c(0,1),
                               breaks = seq(0,1,by = 0.2)) +
