@@ -10,6 +10,8 @@ head(carbon)
 carbon = carbon |> 
   dplyr::mutate(fips = as.character(fips)) |> 
   dplyr::mutate(fips = stringr::str_pad(fips, width = 5, side = "left", pad = "0"))
+carbon_list = dplyr::group_split(carbon, by = fips)
+names(carbon_list) = purrr::map_chr(carbon_list, \(.l) unique(.l$fips))
 
 us_counties = tigris::counties(resolution = "20m", year = 2017)
 us_counties = us_counties |> 
@@ -17,10 +19,6 @@ us_counties = us_counties |>
   dplyr::filter(fips %in% carbon$fips) |> 
   dplyr::arrange(fips)
 plot(sf::st_geometry(us_counties))
-
-carbon_list = dplyr::group_split(carbon, by = fips)
-names(carbon_list) = purrr::map_chr(carbon_list, \(.l) unique(.l$fips))
-length(carbon_list)
 
 # purrr::map(carbon_list,
 #            \(.x) tEDM::fnn(.x, "carbon", E = 2:10,
