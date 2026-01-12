@@ -58,7 +58,7 @@ ggview::save_ggplot(fig_ccm + ggview::canvas(4.5,4.5,dpi = 300),
                     device = cairo_pdf)
 
 #-----------------------------------------------------------------------------#
-#------                  Granger Causality analysis                     ------#
+#------                   Multispatial CCM analysis                     ------#
 #-----------------------------------------------------------------------------#
 
 res_gc = carbon_list |>
