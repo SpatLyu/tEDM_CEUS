@@ -35,26 +35,26 @@ res_ccm$variable = factor(res_ccm$variable,
                           levels = c("carbon_tem", "tem_carbon"),
                           labels = c("carbon → tem", "tem → carbon"))
 head(res_ccm)
-readr::write_rds(res_cmc,"./US county carbon emissions and temperature dynamics/res_cmc.rds")
+readr::write_rds(res_ccm,"./US county carbon emissions and temperature dynamics/res_ccm.rds")
 
-res_cmc = readr::read_rds("./US county carbon emissions and temperature dynamics/res_cmc.rds")
-fig_cmc = ggplot2::ggplot(res_cmc,
+res_ccm = readr::read_rds("./US county carbon emissions and temperature dynamics/res_cmc.rds")
+fig_ccm = ggplot2::ggplot(res_ccm,
                           ggplot2::aes(x = variable, y = value, fill = variable)) +
   ggplot2::geom_boxplot() +
   ggplot2::geom_hline(yintercept = 0.2, linetype = "dashed", color = "red", linewidth = 0.8) +
   ggplot2::theme_bw() +
   ggplot2::scale_x_discrete(name = "") +
-  ggplot2::scale_y_continuous(name = "Causal Strength",
+  ggplot2::scale_y_continuous(name = "Cross Mapping Skill",
                               expand = c(0,0),
-                              limits = c(0,0.45),
-                              breaks = seq(0,0.45,by = 0.05)) +
+                              limits = c(-1,1),
+                              breaks = seq(-1,1,by = 0.2)) +
   ggplot2::theme(legend.position = "none",
                  axis.text.x = ggplot2::element_text(size = 12),
                  axis.text.y = ggplot2::element_text(size = 12),
                  axis.title.y = ggplot2::element_text(size = 12.5))
-fig_cmc + ggview::canvas(4.5,4.5,dpi = 300)
-ggview::save_ggplot(fig_cmc + ggview::canvas(4.5,4.5,dpi = 300),
-                    "./US county carbon emissions and temperature dynamics/carbon_us_cmc.pdf",
+fig_ccm + ggview::canvas(4.5,4.5,dpi = 300)
+ggview::save_ggplot(fig_ccm + ggview::canvas(4.5,4.5,dpi = 300),
+                    "./US county carbon emissions and temperature dynamics/carbon_us_ccm.pdf",
                     device = cairo_pdf)
 
 #-----------------------------------------------------------------------------#
