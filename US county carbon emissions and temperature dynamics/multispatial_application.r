@@ -3,29 +3,27 @@ library(tEDM)
 carbon = readr::read_csv(system.file("case/carbon.csv.gz",package = "tEDM"))
 head(carbon)
 
-#-----------------------------------------------------------------------------#
-#------               Convergent Cross Mapping analysis                 ------#
-#-----------------------------------------------------------------------------#
-
 carbon = carbon |> 
   dplyr::mutate(fips = as.character(fips)) |> 
   dplyr::mutate(fips = stringr::str_pad(fips, width = 5, side = "left", pad = "0"))
 carbon_list = dplyr::group_split(carbon, by = fips)
 names(carbon_list) = purrr::map_chr(carbon_list, \(.l) unique(.l$fips))
 
-county_orders = tibble::tibble(fips = names(carbon_list))
+# county_orders = tibble::tibble(fips = names(carbon_list))
 
-us_counties = tigris::counties(resolution = "20m", year = 2017) |> 
-  dplyr::select(fips = GEOID, name = NAME)
-us_counties = county_orders |> 
-  dplyr::left_join(us_counties,by = "fips") |> 
-  sf::st_as_sf()
-plot(sf::st_geometry(us_counties))
+# us_counties = tigris::counties(resolution = "20m", year = 2017) |> 
+#   dplyr::select(fips = GEOID, name = NAME)
+# us_counties = county_orders |> 
+#   dplyr::left_join(us_counties,by = "fips") |> 
+#   sf::st_as_sf()
+# plot(sf::st_geometry(us_counties))
 
-nb = spdep::poly2nb(us_counties)
-spdep::write.nb.gal(nb,'./US county carbon emissions and temperature dynamics/us_county.gal')
+# nb = spdep::poly2nb(us_counties)
+# spdep::write.nb.gal(nb,'./US county carbon emissions and temperature dynamics/us_county.gal')
 
-nb = spdep::read.gal('./US county carbon emissions and temperature dynamics/us_county.gal')
+#-----------------------------------------------------------------------------#
+#------               Convergent Cross Mapping analysis                 ------#
+#-----------------------------------------------------------------------------#
 
 # purrr::map(carbon_list,
 #            \(.x) tEDM::fnn(.x, "carbon", E = 2:10,
@@ -54,7 +52,7 @@ res_ccm$variable = factor(res_ccm$variable,
 head(res_ccm)
 readr::write_rds(res_ccm,"./US county carbon emissions and temperature dynamics/res_ccm.rds")
 
-res_ccm = readr::read_rds("./US county carbon emissions and temperature dynamics/res_cmc.rds")
+res_ccm = readr::read_rds("./US county carbon emissions and temperature dynamics/res_ccm.rds")
 fig_ccm = ggplot2::ggplot(res_ccm,
                           ggplot2::aes(x = variable, y = value, fill = variable)) +
   ggplot2::geom_boxplot() +
@@ -77,6 +75,8 @@ ggview::save_ggplot(fig_ccm + ggview::canvas(4.5,4.5,dpi = 300),
 #-----------------------------------------------------------------------------#
 #------                   Multispatial CCM analysis                     ------#
 #-----------------------------------------------------------------------------#
+
+nb = spdep::read.gal('./US county carbon emissions and temperature dynamics/us_county.gal')
 
 res_gc = carbon_list |>
   purrr::map_dfr(\(.x) {
