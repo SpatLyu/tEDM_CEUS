@@ -4,6 +4,7 @@
 [![CRAN](https://www.r-pkg.org/badges/version/tEDM)](https://CRAN.R-project.org/package=tEDM)
 [![CRAN Release](https://www.r-pkg.org/badges/last-release/tEDM)](https://CRAN.R-project.org/package=tEDM)
 [![CEUS](https://img.shields.io/badge/CEUS-10.1016%2Fj.compenvurbsys.2026.102435-63847e?logo=doi&style=flat)](https://doi.org/10.1016/j.compenvurbsys.2026.102435)
+[![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.18247201.svg)](https://doi.org/10.5281/zenodo.18247201)
 
 <!-- badges: end -->
 
