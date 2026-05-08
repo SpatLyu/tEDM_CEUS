@@ -1,7 +1,9 @@
 
 <!-- badges: start -->
 
-[![](https://img.shields.io/badge/DOI-10.1029/2024JG008297-004074.svg)](https://doi.org/10.1029/2024JG008297)
+[![CRAN](https://www.r-pkg.org/badges/version/tEDM)](https://CRAN.R-project.org/package=tEDM)
+[![CRAN Release](https://www.r-pkg.org/badges/last-release/tEDM)](https://CRAN.R-project.org/package=tEDM)
+[![CEUS](https://img.shields.io/badge/CEUS-10.1016%2Fj.compenvurbsys.2026.102435-63847e?logo=doi&style=flat)](https://doi.org/10.1016/j.compenvurbsys.2026.102435)
 
 <!-- badges: end -->
 
