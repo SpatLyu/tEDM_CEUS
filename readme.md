@@ -7,21 +7,23 @@
 
 Please cite as:
 
-    Lv, W., Liu, F., Cai, K., Cao, Y., Deng, M., Liang, W., Yan, J., & Wang, G. (2024). Distinguishing the impacts and gradient effects of climate change and human activities on vegetation cover in the weihe river basin, china. Journal of Geophysical Research: Biogeosciences, 129(10). https://doi.org/10.1029/2024JG008297.
+```
+Lyu, W., Lei, Y., Yi, W., Song, Y., Li, X., Dai, S., Qin, Y., Zhao, W., 2026. Causal discovery in urban data with temporal empirical dynamic modeling: The R package tEDM. Computers, Environment and Urban Systems 127, 102435. https://doi.org/10.1016/j.compenvurbsys.2026.102435
+```
 
 A BibTeX entry for LaTeX users is:
 
 ``` bib
-@article{lyu2024veg, 
-title={Distinguishing the Impacts and Gradient Effects of Climate Change and Human Activities on Vegetation Cover in the Weihe River Basin, China}, 
-volume={129}, 
-ISSN={2169-8961}, 
-url={https://doi.org/10.1029/2024JG008297}, 
-DOI={10.1029/2024jg008297}, 
-number={10}, 
-journal={Journal of Geophysical Research: Biogeosciences}, 
-publisher={American Geophysical Union (AGU)}, 
-author={Lv, Wen‐Bo and Liu, Fang‐Mei and Cai, Kai and Cao, Yue and Deng, Meng‐Ling and Liang, Wei and Yan, Jian‐Wu and Wang, Guang‐Yu}, 
-year={2024}
+@article{lyu2026tEDM, 
+    title = {Causal discovery in urban data with temporal empirical dynamic modeling: The {R} package {tEDM}}, 
+    volume = {127}, 
+    ISSN = {0198-9715}, 
+    DOI = {10.1016/j.compenvurbsys.2026.102435}, 
+    journal = {Computers, Environment and Urban Systems},
+    publisher = {Elsevier BV}, 
+    author = {Lyu, Wenbo and Lei, Yangyang and Yi, Wen and Song, Yongze and Li, Xiao and Dai, Shaoqing and Qin, Yiming and Zhao, Wufan}, 
+    year = {2026}, 
+    month = {jul}, 
+    pages = {102435} 
 }
 ```
